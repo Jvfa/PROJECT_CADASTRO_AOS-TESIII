@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -17,30 +18,26 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    // Metodo para buscar todos os clientes
     public List<Cliente> buscarTodosClientes() {
         return clienteRepository.findAll();
     }
 
-    // Metodo para buscar um cliente pelo ID
-    public Cliente buscarClientePorId(Integer id) {
-        return clienteRepository.findByCodcliente(id);
+    public Optional<Cliente> buscarClientePorId(Integer id) {
+        return clienteRepository.findById(id); // Usando findById padrão
     }
 
-    // Metodo para salvar um novo cliente
     public Cliente salvarCliente(Cliente cliente) {
-        // Aqui você pode adicionar validações e regras de negócio antes de salvar
         return clienteRepository.save(cliente);
     }
 
-    // Metodo para editar um cliente existente
-    public void editarCliente(Integer id, Cliente cliente) {
-        // Garante que estamos atualizando o cliente com o ID correto
-        cliente.setCodcliente(id);
-        clienteRepository.save(cliente);
+    public Optional<Cliente> editarCliente(Integer id, Cliente clienteAtualizado) {
+        return clienteRepository.findById(id)
+                .map(clienteExistente -> {
+                    clienteAtualizado.setCodcliente(id);
+                    return clienteRepository.save(clienteAtualizado);
+                });
     }
 
-    // Metodo para apagar um cliente pelo ID
     public void apagarCliente(Integer id) {
         clienteRepository.deleteById(id);
     }

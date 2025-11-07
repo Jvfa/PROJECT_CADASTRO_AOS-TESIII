@@ -1,15 +1,16 @@
 package com.fatec.comercio.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Marca {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -17,21 +18,4 @@ public class Marca {
 
     @Column
     private String nomemarca;
-
-    public Integer getCodmarca() {
-        return codmarca;
-    }
-
-    public void setCodmarca(Integer codmarca) {
-        this.codmarca = codmarca;
-    }
-
-    public String getNomemarca() {
-        return nomemarca;
-    }
-
-    public void setNomemarca(String nomemarca) {
-        this.nomemarca = nomemarca;
-    }
-
 }

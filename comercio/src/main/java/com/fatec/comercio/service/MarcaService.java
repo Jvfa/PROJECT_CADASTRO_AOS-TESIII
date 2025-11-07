@@ -1,10 +1,9 @@
 package com.fatec.comercio.service;
 
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.fatec.comercio.models.Marca;
 import com.fatec.comercio.repository.MarcaRepository;
 
@@ -13,36 +12,31 @@ public class MarcaService {
     @Autowired
     private MarcaRepository marcaRepository;
     
-    //Criando o construtor da classe marcaService
-    
     public MarcaService(MarcaRepository marcaRepository) {
         this.marcaRepository = marcaRepository;
     }
 
-    //Salvar todos as Marcas
     public List<Marca> allMarcas() {
         return marcaRepository.findAll();
     }
 
-    //Buscar pelo codigo
-    public Marca marcaId(Integer id) {
-        return marcaRepository.findByCodmarca(id);
+    public Optional<Marca> marcaId(Integer id) {
+        return marcaRepository.findById(id); // Alterado para findById
     }
 
-    //Apagar Marca pelo Codigo
-    public String apagaId(Integer id) {
+    public void apagaId(Integer id) {
         marcaRepository.deleteById(id);
-        return "Apaguei: " + id;
     }
 
-    //Salvar Marca
     public Marca salvarMarca(Marca marca) {
         return marcaRepository.save(marca);
     }
 
-    //Editar Marca
-    public void editarMarca(Integer id, Marca marca) {
-        marca.setCodmarca(id);
-        marcaRepository.save(marca);
+    public Optional<Marca> editarMarca(Integer id, Marca marcaAtualizada) {
+        return marcaRepository.findById(id)
+            .map(marcaExistente -> {
+                marcaAtualizada.setCodmarca(id);
+                return marcaRepository.save(marcaAtualizada);
+            });
     }
 }

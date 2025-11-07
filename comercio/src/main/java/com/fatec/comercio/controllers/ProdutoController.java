@@ -2,8 +2,9 @@ package com.fatec.comercio.controllers;
 
 import com.fatec.comercio.models.Produto;
 import com.fatec.comercio.service.ProdutoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,29 +18,33 @@ public class ProdutoController {
     }
 
     @GetMapping("")
-    public List<Produto> getTodosProdutos() {
-        return produtoService.buscarTodosProdutos();
+    public ResponseEntity<List<Produto>> getTodosProdutos() {
+        return ResponseEntity.ok(produtoService.buscarTodosProdutos());
     }
 
     @GetMapping("/{id}")
-    public Produto getProdutoPorId(@PathVariable Integer id) {
-        return produtoService.buscarProdutoPorId(id);
+    public ResponseEntity<Produto> getProdutoPorId(@PathVariable Integer id) {
+        return produtoService.buscarProdutoPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("")
-    public Produto postProduto(@RequestBody Produto produto) {
-        return produtoService.salvarProduto(produto);
+    public ResponseEntity<Produto> postProduto(@RequestBody Produto produto) {
+        Produto produtoSalvo = produtoService.salvarProduto(produto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(produtoSalvo);
     }
 
     @PutMapping("/{id}")
-    public String putProduto(@PathVariable Integer id, @RequestBody Produto produto) {
-        produtoService.editarProduto(id, produto);
-        return "Dados do produto atualizados com sucesso!";
+    public ResponseEntity<Produto> putProduto(@PathVariable Integer id, @RequestBody Produto produto) {
+        return produtoService.editarProduto(id, produto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduto(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteProduto(@PathVariable Integer id) {
         produtoService.apagarProduto(id);
-        return "O produto de código: " + id + " foi deletado.";
+        return ResponseEntity.noContent().build();
     }
 }

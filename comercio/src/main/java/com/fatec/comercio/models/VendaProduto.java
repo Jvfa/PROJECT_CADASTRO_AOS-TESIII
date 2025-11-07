@@ -3,8 +3,14 @@ package com.fatec.comercio.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class VendaProduto {
 
     @EmbeddedId
@@ -26,48 +32,4 @@ public class VendaProduto {
 
     @Column(name = "valorv", precision = 10, scale = 2)
     private BigDecimal valorVenda;
-
-    // ============== GETTERS E SETTERS COMPLETOS ABAIXO ==============
-
-    public VendaProdutoId getId() {
-        return id;
-    }
-
-    public void setId(VendaProdutoId id) {
-        this.id = id;
-    }
-
-
-
-    public Venda getVenda() {
-        return venda;
-    }
-
-    public void setVenda(Venda venda) {
-        this.venda = venda;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    public BigDecimal getQuantidadeVendida() {
-        return quantidadeVendida;
-    }
-
-    public void setQuantidadeVendida(BigDecimal quantidadeVendida) {
-        this.quantidadeVendida = quantidadeVendida;
-    }
-
-    public BigDecimal getValorVenda() {
-        return valorVenda;
-    }
-
-    public void setValorVenda(BigDecimal valorVenda) {
-        this.valorVenda = valorVenda;
-    }
 }

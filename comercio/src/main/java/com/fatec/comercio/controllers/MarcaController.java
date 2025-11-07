@@ -1,19 +1,11 @@
 package com.fatec.comercio.controllers;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.fatec.comercio.models.Marca;
 import com.fatec.comercio.service.MarcaService;
-
 
 @RestController
 @RequestMapping("/marcas")
@@ -25,30 +17,33 @@ public class MarcaController {
     }
 
     @GetMapping("")
-    public List<Marca> getMarcas() {
-        return marcaService.allMarcas();
+    public ResponseEntity<List<Marca>> getMarcas() {
+        return ResponseEntity.ok(marcaService.allMarcas());
     }
 
     @GetMapping("/{id}")
-    public Marca getMarcaId(@PathVariable Integer id) {
-       return marcaService.marcaId(id);
+    public ResponseEntity<Marca> getMarcaId(@PathVariable Integer id) {
+       return marcaService.marcaId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("")
-    public String postMarca(@RequestBody Marca marca) {
-        marcaService.salvarMarca(marca);
-        return "Dados Salvos com Sucesso!!!";
+    public ResponseEntity<Marca> postMarca(@RequestBody Marca marca) {
+        Marca marcaSalva = marcaService.salvarMarca(marca);
+        return ResponseEntity.status(HttpStatus.CREATED).body(marcaSalva);
     }
 
     @DeleteMapping("/{id}")
-    public String deletaid(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletaid(@PathVariable Integer id) {
         marcaService.apagaId(id);
-        return "A Marca de codigo: " + id + " foi deletado";
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public String putMarca(@PathVariable Integer id, @RequestBody Marca marca) {
-        marcaService.editarMarca(id, marca);
-        return "Dados Atualizado com sucesso";
+    public ResponseEntity<Marca> putMarca(@PathVariable Integer id, @RequestBody Marca marca) {
+        return marcaService.editarMarca(id, marca)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

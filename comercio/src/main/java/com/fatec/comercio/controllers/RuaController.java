@@ -1,17 +1,9 @@
 package com.fatec.comercio.controllers;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.fatec.comercio.models.Rua;
 import com.fatec.comercio.service.RuaService;
 
@@ -25,30 +17,33 @@ public class RuaController {
     }
 
     @GetMapping("")
-    public List<Rua> getRuas() {
-        return ruaService.allRuas();
+    public ResponseEntity<List<Rua>> getRuas() {
+        return ResponseEntity.ok(ruaService.allRuas());
     }
 
     @GetMapping("/{id}")
-    public Rua getRuaId(@PathVariable Integer id) {
-       return ruaService.ruaId(id);
+    public ResponseEntity<Rua> getRuaId(@PathVariable Integer id) {
+       return ruaService.ruaId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("")
-    public String postRua(@RequestBody Rua rua) {
-        ruaService.salvarRua(rua);
-        return "Dados Salvos com Sucesso!!!";
+    public ResponseEntity<Rua> postRua(@RequestBody Rua rua) {
+        Rua ruaSalva = ruaService.salvarRua(rua);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ruaSalva);
     }
 
     @DeleteMapping("/{id}")
-    public String deletaid(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletaid(@PathVariable Integer id) {
         ruaService.apagaId(id);
-        return "A Rua de codigo: " + id + " foi deletado";
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public String putRua(@PathVariable Integer id, @RequestBody Rua rua) {
-        ruaService.editarRua(id, rua);
-        return "Dados Atualizado com sucesso";
+    public ResponseEntity<Rua> putRua(@PathVariable Integer id, @RequestBody Rua rua) {
+        return ruaService.editarRua(id, rua)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

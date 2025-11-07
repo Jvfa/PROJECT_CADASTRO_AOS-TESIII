@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -17,34 +18,26 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    // Metodo para buscar todos os produtos
     public List<Produto> buscarTodosProdutos() {
         return produtoRepository.findAll();
     }
 
-    // Metodo para buscar um produto pelo ID
-    public Produto buscarProdutoPorId(Integer id) {
-        // O findById retorna um Optional, .orElse(null) retorna o produto ou nulo se não encontrar.
-        return produtoRepository.findById(id).orElse(null);
+    public Optional<Produto> buscarProdutoPorId(Integer id) {
+        return produtoRepository.findById(id);
     }
 
-    // Metodo para salvar um novo produto
     public Produto salvarProduto(Produto produto) {
-        // Validações e regras de negócio podem ser adicionadas aqui
         return produtoRepository.save(produto);
     }
 
-    // Metodo para editar um produto existente
-    public Produto editarProduto(Integer id, Produto produtoAtualizado) {
-        // Verifica se o produto existe antes de tentar atualizar
+    public Optional<Produto> editarProduto(Integer id, Produto produtoAtualizado) {
         return produtoRepository.findById(id)
                 .map(produtoExistente -> {
                     produtoAtualizado.setCodproduto(id);
                     return produtoRepository.save(produtoAtualizado);
-                }).orElse(null); // Retorna nulo se o produto não for encontrado
+                });
     }
 
-    // Metodo para apagar um produto pelo ID
     public void apagarProduto(Integer id) {
         produtoRepository.deleteById(id);
     }

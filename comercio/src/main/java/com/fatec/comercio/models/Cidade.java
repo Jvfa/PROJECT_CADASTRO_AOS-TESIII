@@ -2,9 +2,15 @@ package com.fatec.comercio.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Cidade {
 
     @Id
@@ -18,36 +24,9 @@ public class Cidade {
     @JoinColumn(name = "coduffk")
     private Uf uf;
 
-    public Integer getCodcidade() {
-        return codcidade;
-    }
-
-    public void setCodcidade(Integer codcidade) {
-        this.codcidade = codcidade;
-    }
-
-    public String getNomecidade() {
-        return nomecidade;
-    }
-
-    public void setNomecidade(String nomecidade) {
-        this.nomecidade = nomecidade;
-    }
-
-    public Uf getUf() {
-        return uf;
-    }
-
-    public void setUf(Uf uf) {
-        this.uf = uf;
-    }
-
+    // Construtor usado pelo CidadeForm
     public Cidade(String nomecidade, Uf uf){
         this.nomecidade = nomecidade;
         this.uf = uf;
-    }
-
-    public Cidade(){
-
     }
 }

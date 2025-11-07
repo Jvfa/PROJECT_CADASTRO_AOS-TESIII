@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CidadeService {
@@ -19,20 +20,21 @@ public class CidadeService {
     @Autowired
     private UfRepository ufRepository;
 
-    public CidadeService(CidadeRepository cidadeRepository){
+    public CidadeService(CidadeRepository cidadeRepository, UfRepository ufRepository){
         this.cidadeRepository = cidadeRepository;
+        this.ufRepository = ufRepository;
     }
 
     public List<Cidade> allCidades(){
         return cidadeRepository.findAll();
     }
 
-    public Cidade cidadeId(Integer id){
-        return cidadeRepository.findByCodcidade(id);
+    public Optional<Cidade> cidadeId(Integer id){
+        return cidadeRepository.findById(id); // <--- CORRIGIDO
     }
 
-    public Cidade cidadeNomecidade(String nomecidade){
-        return cidadeRepository.findByNomecidade(nomecidade);
+    public Optional<Cidade> cidadeNomecidade(String nomecidade){
+        return Optional.ofNullable(cidadeRepository.findByNomecidade(nomecidade));
     }
 
     public void apagaCidadeId(Integer id){
@@ -44,13 +46,14 @@ public class CidadeService {
         return cidadeRepository.save(cidade);
     }
 
-    public Cidade editaCidade(CidadeForm cidadeForm, Integer id){
+    public Optional<Cidade> editaCidade(CidadeForm cidadeForm, Integer id){
         Uf uf = ufRepository.findByNomeuf(cidadeForm.getNomeuf());
-
-        Cidade cidade = cidadeRepository.getOne(id);
-        cidade.setNomecidade(cidadeForm.getNomecidade());
-        cidade.setUf(uf);
-        return cidade;
+        
+        return cidadeRepository.findById(id) // Usando findById
+                .map(cidade -> {
+                    cidade.setNomecidade(cidadeForm.getNomecidade());
+                    cidade.setUf(uf);
+                    return cidadeRepository.save(cidade); // Salva a entidade atualizada
+                });
     }
-
 }

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.fatec.comercio.models.Cep;
 
 public interface CepRepository extends JpaRepository<Cep, Integer> {
-    Cep findByCodcep(Integer id);
+   
     Cep findByNumerocep(String numerocep);
     
 }

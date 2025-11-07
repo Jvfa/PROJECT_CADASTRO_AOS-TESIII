@@ -1,16 +1,9 @@
 package com.fatec.comercio.controllers;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.fatec.comercio.models.Tipo;
 import com.fatec.comercio.service.TipoService;
 
@@ -24,31 +17,33 @@ public class TipoController {
     }
 
      @GetMapping("")
-     public List<Tipo> getTipos() {
-         return tipoService.allTipos();
+     public ResponseEntity<List<Tipo>> getTipos() {
+         return ResponseEntity.ok(tipoService.allTipos());
      }
     
     @GetMapping("/{id}")
-    public Tipo getTipoId(@PathVariable Integer id) {
-       return tipoService.tipoId(id);
+    public ResponseEntity<Tipo> getTipoId(@PathVariable Integer id) {
+       return tipoService.tipoId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("")
-    public String postTipo(@RequestBody Tipo tipo) {
-        tipoService.salvarTipo(tipo);
-        return "Dados Salvos com Sucesso!!!";
+    public ResponseEntity<Tipo> postTipo(@RequestBody Tipo tipo) {
+        Tipo tipoSalvo = tipoService.salvarTipo(tipo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tipoSalvo);
     }
 
     @DeleteMapping("/{id}")
-    public String deletaid(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletaid(@PathVariable Integer id) {
         tipoService.apagaId(id);
-        return "O Tipo de codigo: " + id + " foi deletado";
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public String putTipo(@PathVariable Integer id, @RequestBody Tipo tipo) {
-        tipoService.editarTipo(id, tipo);
-        return "Dados Atualizado com sucesso";
+    public ResponseEntity<Tipo> putTipo(@PathVariable Integer id, @RequestBody Tipo tipo) {
+        return tipoService.editarTipo(id, tipo)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
-    
 }

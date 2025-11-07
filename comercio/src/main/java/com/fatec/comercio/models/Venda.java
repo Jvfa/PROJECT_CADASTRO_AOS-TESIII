@@ -4,9 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Venda {
 
     @Id
@@ -20,41 +26,6 @@ public class Venda {
     @JoinColumn(name = "codclientefk")
     private Cliente cliente;
 
-    // Uma Venda tem uma lista de VendaProduto (os itens da venda)
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
     private List<VendaProduto> itens;
-
-    // Getters e Setters
-
-    public Integer getCodvenda() {
-        return codvenda;
-    }
-
-    public void setCodvenda(Integer codvenda) {
-        this.codvenda = codvenda;
-    }
-
-    public Date getDatavenda() {
-        return datavenda;
-    }
-
-    public void setDatavenda(Date datavenda) {
-        this.datavenda = datavenda;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public List<VendaProduto> getItens() {
-        return itens;
-    }
-
-    public void setItens(List<VendaProduto> itens) {
-        this.itens = itens;
-    }
 }

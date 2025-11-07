@@ -4,9 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fatec.comercio.models.Sexo;
 
-public interface SexoRepository extends JpaRepository<Sexo, Integer>{
+public interface SexoRepository extends JpaRepository<Sexo, Integer> {
+    
     Sexo findByNomesexo(String nomesexo);
-    Sexo findByCodsexo(Integer id);
+    
 }
 
 

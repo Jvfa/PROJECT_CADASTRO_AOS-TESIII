@@ -3,9 +3,15 @@ package com.fatec.comercio.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Produto {
 
     @Id
@@ -28,54 +34,4 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "codtipofk")
     private Tipo tipo;
-
-    // Getters e Setters
-
-    public Integer getCodproduto() {
-        return codproduto;
-    }
-
-    public void setCodproduto(Integer codproduto) {
-        this.codproduto = codproduto;
-    }
-
-    public String getNomeproduto() {
-        return nomeproduto;
-    }
-
-    public void setNomeproduto(String nomeproduto) {
-        this.nomeproduto = nomeproduto;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public BigDecimal getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(BigDecimal quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
-
-    public Tipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
 }

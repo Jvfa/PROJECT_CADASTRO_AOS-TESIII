@@ -3,38 +3,20 @@ package com.fatec.comercio.models;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VendaProdutoId implements Serializable {
 
     private Integer codvendafk;
     private Integer codprodutofk;
-
-    // Construtor, getters, setters, hashCode e equals
-
-    public VendaProdutoId() {
-    }
-
-    public VendaProdutoId(Integer codvendafk, Integer codprodutofk) {
-        this.codvendafk = codvendafk;
-        this.codprodutofk = codprodutofk;
-    }
-
-    public Integer getCodvendafk() {
-        return codvendafk;
-    }
-
-    public void setCodvendafk(Integer codvendafk) {
-        this.codvendafk = codvendafk;
-    }
-
-    public Integer getCodprodutofk() {
-        return codprodutofk;
-    }
-
-    public void setCodprodutofk(Integer codprodutofk) {
-        this.codprodutofk = codprodutofk;
-    }
 
     @Override
     public boolean equals(Object o) {

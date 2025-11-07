@@ -1,7 +1,7 @@
 package com.fatec.comercio.service;
 
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fatec.comercio.models.Uf;
@@ -16,30 +16,27 @@ public class UfService {
         this.ufRepository = ufRepository;
     }
 
-    //Buscar todos os Ufs
     public List<Uf> allUfs(){
         return ufRepository.findAll();
     }
 
-    //Buscar Uf pelo Código
-    public Uf ufId(Integer id){
-        return ufRepository.findByCoduf(id);
+    public Optional<Uf> ufId(Integer id){
+        return ufRepository.findById(id); // <--- CORRIGIDO
     }
 
-    //Apagar Uf pelo Código
     public void apagaId(Integer id){
         ufRepository.deleteById(id);
     }
 
-    //Salvar Uf
-    public String salvarUf(Uf uf){
-        ufRepository.save(uf);
-        return "Uf Cadastrado com sucesso!";
+    public Uf salvarUf(Uf uf){
+        return ufRepository.save(uf);
     }
 
-     //Editar Uf
-    public void editarUf(Integer id, Uf uf){
-        uf.setCoduf(id);
-        ufRepository.save(uf);
+    public Optional<Uf> editarUf(Integer id, Uf ufAtualizada){
+        return ufRepository.findById(id)
+            .map(ufExistente -> {
+                 ufAtualizada.setCoduf(id);
+                return ufRepository.save(ufAtualizada);
+            });
     }
 }
