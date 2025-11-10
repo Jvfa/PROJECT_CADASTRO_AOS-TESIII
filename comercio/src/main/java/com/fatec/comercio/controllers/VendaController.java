@@ -20,13 +20,13 @@ public class VendaController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Venda> criarVenda(@RequestBody VendaForm form) {
+    public ResponseEntity<?> criarVenda(@RequestBody VendaForm form) { // Alterado para ResponseEntity<?>
         try {
             Venda novaVenda = vendaService.salvarVenda(form);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaVenda);
         } catch (RuntimeException e) {
-            // Se o service lançar uma exceção (ex: cliente ou produto não encontrado), retorna um erro.
-            return ResponseEntity.badRequest().build();
+            // Retorna o erro de negócio (ex: estoque insuficiente)
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -42,6 +42,17 @@ public class VendaController {
             return ResponseEntity.ok(venda);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarVenda(@PathVariable Integer id) {
+        try {
+            vendaService.apagarVenda(id);
+            return ResponseEntity.noContent().build(); // Retorna 204 No Content (Sucesso)
+        } catch (RuntimeException e) {
+            // Se a VendaService lançar a exceção (Venda não encontrada)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }
