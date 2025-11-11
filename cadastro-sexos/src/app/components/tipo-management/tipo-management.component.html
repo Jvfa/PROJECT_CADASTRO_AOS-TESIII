@@ -1,1 +1,33 @@
-<p>tipo-management works!</p>
+<h2>Gerenciamento de Tipos</h2>
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar Tipo' : 'Novo Tipo' }}</h3>
+  <form #tipoForm="ngForm" (ngSubmit)="onSubmit(tipoForm)">
+    <div class="form-group">
+      <label for="nometipo">Nome do Tipo:</label>
+      <input type="text" id="nometipo" name="nometipo" [(ngModel)]="tipoAtual.nometipo" required>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="tipoForm.invalid">{{ isEditing ? 'Atualizar' : 'Salvar' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm(tipoForm)" *ngIf="isEditing">Cancelar</button>
+  </form>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tipo of tipos">
+        <td>{{ tipo.codtipo }}</td>
+        <td>{{ tipo.nometipo }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(tipo)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(tipo.codtipo)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

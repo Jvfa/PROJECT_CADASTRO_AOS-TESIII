@@ -1,1 +1,52 @@
-<p>marca-management works!</p>
+<h2>Gerenciamento de Marcas</h2>
+
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar Marca' : 'Nova Marca' }}</h3>
+  <form #marcaForm="ngForm" (ngSubmit)="onSubmit(marcaForm)">
+
+    <div class="form-group">
+      <label for="nomemarca">Nome da Marca:</label>
+      <input
+        type="text"
+        id="nomemarca"
+        name="nomemarca"
+        [(ngModel)]="marcaAtual.nomemarca"
+        required
+        #nomemarca="ngModel"
+      >
+      <div *ngIf="nomemarca.invalid && nomemarca.touched" style="color: red;">
+        Nome é obrigatório.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="marcaForm.invalid">
+      {{ isEditing ? 'Atualizar' : 'Salvar' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm(marcaForm)" *ngIf="isEditing">
+      Cancelar Edição
+    </button>
+
+  </form>
+</div>
+
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let marca of marcas">
+        <td>{{ marca.codmarca }}</td>
+        <td>{{ marca.nomemarca }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(marca)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(marca.codmarca)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

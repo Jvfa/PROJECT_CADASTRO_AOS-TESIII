@@ -13,7 +13,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
     RouterLinkActive  // Adicione aqui
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'] // Ou .scss se você estiver usando
+  styleUrls: ['./app.component.scss'] // Ou .scss se você estiver usando
 })
 export class AppComponent {
   title = 'comercio-angular-app';

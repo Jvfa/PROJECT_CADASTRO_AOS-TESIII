@@ -1,1 +1,33 @@
-<p>cep-management works!</p>
+<h2>Gerenciamento de CEPs</h2>
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar CEP' : 'Novo CEP' }}</h3>
+  <form #cepForm="ngForm" (ngSubmit)="onSubmit(cepForm)">
+    <div class="form-group">
+      <label for="numerocep">Número do CEP:</label>
+      <input type="text" id="numerocep" name="numerocep" [(ngModel)]="cepAtual.numerocep" required>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="cepForm.invalid">{{ isEditing ? 'Atualizar' : 'Salvar' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm(cepForm)" *ngIf="isEditing">Cancelar</button>
+  </form>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Número</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cep of ceps">
+        <td>{{ cep.codcep }}</td>
+        <td>{{ cep.numerocep }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(cep)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(cep.codcep)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

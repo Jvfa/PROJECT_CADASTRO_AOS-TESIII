@@ -1,0 +1,12 @@
+.item-venda-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end; /* Alinha os botões com os inputs */
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.item-venda-actions {
+  padding-bottom: 10px; /* Ajuste para alinhar com o input */
+}

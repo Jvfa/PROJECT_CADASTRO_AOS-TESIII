@@ -1,1 +1,33 @@
-<p>rua-management works!</p>
+<h2>Gerenciamento de Ruas</h2>
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar Rua' : 'Nova Rua' }}</h3>
+  <form #ruaForm="ngForm" (ngSubmit)="onSubmit(ruaForm)">
+    <div class="form-group">
+      <label for="nomerua">Nome da Rua:</label>
+      <input type="text" id="nomerua" name="nomerua" [(ngModel)]="ruaAtual.nomerua" required>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="ruaForm.invalid">{{ isEditing ? 'Atualizar' : 'Salvar' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm(ruaForm)" *ngIf="isEditing">Cancelar</button>
+  </form>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rua of ruas">
+        <td>{{ rua.codrua }}</td>
+        <td>{{ rua.nomerua }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(rua)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(rua.codrua)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

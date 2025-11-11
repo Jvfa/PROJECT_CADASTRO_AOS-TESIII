@@ -1,1 +1,33 @@
-<p>bairro-management works!</p>
+<h2>Gerenciamento de Bairros</h2>
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar Bairro' : 'Novo Bairro' }}</h3>
+  <form #bairroForm="ngForm" (ngSubmit)="onSubmit(bairroForm)">
+    <div class="form-group">
+      <label for="nomebairro">Nome do Bairro:</label>
+      <input type="text" id="nomebairro" name="nomebairro" [(ngModel)]="bairroAtual.nomebairro" required>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="bairroForm.invalid">{{ isEditing ? 'Atualizar' : 'Salvar' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm(bairroForm)" *ngIf="isEditing">Cancelar</button>
+  </form>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bairro of bairros">
+        <td>{{ bairro.codbairro }}</td>
+        <td>{{ bairro.nomebairro }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(bairro)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(bairro.codbairro)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

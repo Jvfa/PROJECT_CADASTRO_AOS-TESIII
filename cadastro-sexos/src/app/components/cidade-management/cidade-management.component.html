@@ -1,1 +1,60 @@
-<p>cidade-management works!</p>
+<h2>Gerenciamento de Cidades</h2>
+
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar Cidade' : 'Nova Cidade' }}</h3>
+  <form [formGroup]="cidadeForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="nomecidade">Nome da Cidade:</label>
+      <input
+        type="text"
+        id="nomecidade"
+        formControlName="nomecidade"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="nomeuf">UF:</label>
+      <select id="nomeuf" formControlName="nomeuf">
+        <option [ngValue]="null" disabled>Selecione a UF...</option>
+        <option *ngFor="let uf of ufs" [ngValue]="uf.nomeuf">
+          {{ uf.nomeuf }} ({{ uf.sigla }})
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="cidadeForm.invalid">
+      {{ isEditing ? 'Atualizar' : 'Salvar' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()" *ngIf="isEditing">
+      Cancelar Edição
+    </button>
+
+  </form>
+</div>
+
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>UF</th>
+        <th>Sigla</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cidade of cidades">
+        <td>{{ cidade.codcidade }}</td>
+        <td>{{ cidade.nomecidade }}</td>
+        <td>{{ cidade.uf?.nomeuf }}</td>
+        <td>{{ cidade.uf?.sigla }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(cidade)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(cidade.codcidade)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

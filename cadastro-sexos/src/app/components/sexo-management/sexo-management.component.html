@@ -1,1 +1,33 @@
-<p>sexo-management works!</p>
+<h2>Gerenciamento de Sexos</h2>
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar Sexo' : 'Novo Sexo' }}</h3>
+  <form #sexoForm="ngForm" (ngSubmit)="onSubmit(sexoForm)">
+    <div class="form-group">
+      <label for="nomesexo">Nome do Sexo:</label>
+      <input type="text" id="nomesexo" name="nomesexo" [(ngModel)]="sexoAtual.nomesexo" required>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="sexoForm.invalid">{{ isEditing ? 'Atualizar' : 'Salvar' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm(sexoForm)" *ngIf="isEditing">Cancelar</button>
+  </form>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sexo of sexos">
+        <td>{{ sexo.codsexo }}</td>
+        <td>{{ sexo.nomesexo }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(sexo)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(sexo.codsexo)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

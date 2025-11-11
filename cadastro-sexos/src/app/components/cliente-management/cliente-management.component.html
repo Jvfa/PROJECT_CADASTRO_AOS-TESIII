@@ -1,1 +1,104 @@
-<p>cliente-management works!</p>
+<h2>Gerenciamento de Clientes</h2>
+
+<div class="form-container">
+  <h3>{{ isEditing ? 'Editar Cliente' : 'Novo Cliente' }}</h3>
+  <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+
+    <div style="display: flex; gap: 20px;">
+      <div class="form-group" style="flex: 3;">
+        <label for="nomecliente">Nome:</label>
+        <input type="text" id="nomecliente" formControlName="nomecliente">
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" formControlName="cpf">
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+      <div class="form-group" style="flex: 1;">
+        <label for="datanasc">Data Nasc.:</label>
+        <input type="date" id="datanasc" formControlName="datanasc">
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" formControlName="sexo">
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let sexo of sexos" [ngValue]="sexo.codsexo">{{ sexo.nomesexo }}</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label for="numerocasa">Nº Casa:</label>
+        <input type="text" id="numerocasa" formControlName="numerocasa">
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+        <div class="form-group" style="flex: 1;">
+            <label for="cidade">Cidade:</label>
+            <select id="cidade" formControlName="cidade">
+              <option [ngValue]="null" disabled>Selecione...</option>
+              <option *ngFor="let cidade of cidades" [ngValue]="cidade.codcidade">{{ cidade.nomecidade }}</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="bairro">Bairro:</label>
+            <select id="bairro" formControlName="bairro">
+              <option [ngValue]="null" disabled>Selecione...</option>
+              <option *ngFor="let bairro of bairros" [ngValue]="bairro.codbairro">{{ bairro.nomebairro }}</option>
+            </select>
+          </div>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+      <div class="form-group" style="flex: 2;">
+        <label for="rua">Rua:</label>
+        <select id="rua" formControlName="rua">
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let rua of ruas" [ngValue]="rua.codrua">{{ rua.nomerua }}</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label for="cep">CEP:</label>
+        <select id="cep" formControlName="cep">
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let cep of ceps" [ngValue]="cep.codcep">{{ cep.numerocep }}</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="clienteForm.invalid">
+      {{ isEditing ? 'Atualizar' : 'Salvar' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()" *ngIf="isEditing">
+      Cancelar Edição
+    </button>
+
+  </form>
+</div>
+
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Cidade</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientes">
+        <td>{{ cliente.codcliente }}</td>
+        <td>{{ cliente.nomecliente }}</td>
+        <td>{{ cliente.cpf }}</td>
+        <td>{{ cliente.cidade?.nomecidade }}</td>
+        <td class="actions">
+          <button class="btn btn-edit" (click)="onEdit(cliente)">Editar</button>
+          <button class="btn btn-danger" (click)="onDelete(cliente.codcliente)">Deletar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,1 +1,90 @@
-<p>venda-management works!</p>
+<h2>Gerenciamento de Vendas</h2>
+
+<div class="form-container">
+  <h3>Nova Venda</h3>
+  <form [formGroup]="vendaForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="clienteId">Cliente:</label>
+      <select id="clienteId" formControlName="clienteId">
+        <option [ngValue]="null" disabled>Selecione um cliente...</option>
+        <option *ngFor="let cliente of clientes" [ngValue]="cliente.codcliente">
+          {{ cliente.nomecliente }} (CPF: {{ cliente.cpf }})
+        </option>
+      </select>
+    </div>
+
+    <h4>Itens da Venda</h4>
+    <div formArrayName="itens">
+      <div *ngFor="let item of itens.controls; let i = index" [formGroupName]="i" class="item-venda-row">
+
+        <div class="form-group" style="flex: 3;">
+          <label for="produtoId-{{i}}">Produto:</label>
+          <select id="produtoId-{{i}}" formControlName="produtoId">
+            <option [ngValue]="null" disabled>Selecione um produto...</option>
+            <option *ngFor="let produto of produtos" [ngValue]="produto.codproduto">
+              {{ produto.nomeproduto }} (Estoque: {{ produto.quantidade }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group" style="flex: 1;">
+          <label for="quantidade-{{i}}">Qtd.:</label>
+          <input type="number" id="quantidade-{{i}}" formControlName="quantidade" min="1">
+        </div>
+
+        <div class="form-group item-venda-actions">
+          <button type="button" class="btn btn-danger" (click)="removerItem(i)">Remover</button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" (click)="adicionarItem()">
+      Adicionar Outro Item
+    </button>
+
+    <hr style="margin: 20px 0;">
+
+    <button type="submit" class="btn btn-primary" [disabled]="vendaForm.invalid">
+      Finalizar Venda
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()">
+      Cancelar
+    </button>
+
+  </form>
+</div>
+
+<div class="table-container">
+  <h3>Histórico de Vendas</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID Venda</th>
+        <th>Data</th>
+        <th>Cliente</th>
+        <th>Itens</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let venda of vendas">
+        <td>{{ venda.codvenda }}</td>
+        <td>{{ venda.datavenda | date:'dd/MM/yyyy' }}</td>
+        <td>{{ venda.cliente?.nomecliente }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let item of venda.itens">
+              {{ item.produto?.nomeproduto }} (Qtd: {{ item.quantidadeVendida }})
+            </li>
+          </ul>
+        </td>
+        <td class="actions">
+          <button class="btn btn-danger" (click)="onDelete(venda.codvenda)">
+            Deletar (Estornar)
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
